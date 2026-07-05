@@ -1,0 +1,603 @@
+<title>Quiz 1: Week 1 Recap — Skool Trading Academy</title>
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-soft: #2a3a5c;
+    --gold: #ad8a24;
+    --gold-bg: #c9a227;
+    --paper: #fbfaf6;
+    --card: #ffffff;
+    --card-border: #e6dfc9;
+    --ink: #23262b;
+    --ink-soft: #5b5f66;
+    --success: #2f7a4d;
+    --success-bg: #eaf4ee;
+    --danger: #b0413e;
+    --danger-bg: #fbeeed;
+    --focus: #7a5b12;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --navy: #202b47;
+      --navy-soft: #33456e;
+      --gold: #e0bb52;
+      --gold-bg: #d9b545;
+      --paper: #10162a;
+      --card: #182038;
+      --card-border: #2d3958;
+      --ink: #e8e6df;
+      --ink-soft: #a3a8b8;
+      --success: #5cbf85;
+      --success-bg: #16301f;
+      --danger: #e08683;
+      --danger-bg: #3a1a1a;
+      --focus: #e0bb52;
+    }
+  }
+  :root[data-theme="dark"] {
+    --navy: #202b47;
+    --navy-soft: #33456e;
+    --gold: #e0bb52;
+    --gold-bg: #d9b545;
+    --paper: #10162a;
+    --card: #182038;
+    --card-border: #2d3958;
+    --ink: #e8e6df;
+    --ink-soft: #a3a8b8;
+    --success: #5cbf85;
+    --success-bg: #16301f;
+    --danger: #e08683;
+    --danger-bg: #3a1a1a;
+    --focus: #e0bb52;
+  }
+  :root[data-theme="light"] {
+    --navy: #1a2744;
+    --navy-soft: #2a3a5c;
+    --gold: #ad8a24;
+    --gold-bg: #c9a227;
+    --paper: #fbfaf6;
+    --card: #ffffff;
+    --card-border: #e6dfc9;
+    --ink: #23262b;
+    --ink-soft: #5b5f66;
+    --success: #2f7a4d;
+    --success-bg: #eaf4ee;
+    --danger: #b0413e;
+    --danger-bg: #fbeeed;
+    --focus: #7a5b12;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { padding-bottom: 4rem; }
+
+  h1, h2, h3, .serif {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    text-wrap: balance;
+  }
+
+  a { color: var(--gold); }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--navy);
+    color: #f3efe3;
+    padding: 0.85rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  }
+  .topbar .eyebrow {
+    font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin: 0 0 0.15rem 0;
+  }
+  .topbar h1 { font-size: 1.05rem; margin: 0; color: #f3efe3; font-weight: 700; }
+  .progress-wrap {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85rem; white-space: nowrap;
+  }
+  .progress-track {
+    width: 90px; height: 6px; border-radius: 4px;
+    background: rgba(255,255,255,0.18); overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--gold-bg);
+    width: 0%; transition: width 0.35s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .progress-fill { transition: none; }
+  }
+
+  main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.75rem 1.25rem 0;
+  }
+
+  .masthead {
+    text-align: center;
+    padding: 1.75rem 0 2.25rem;
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 2rem;
+  }
+  .masthead .eyebrow {
+    font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 0.6rem;
+  }
+  .masthead h1 { font-size: 2rem; margin: 0 0 0.35rem; color: var(--navy); }
+  :root[data-theme="dark"] .masthead h1,
+  @media (prefers-color-scheme: dark) { .masthead h1 { color: var(--ink); } }
+  .masthead p { color: var(--ink-soft); max-width: 46ch; margin: 0.9rem auto 0; line-height: 1.55; font-size: 0.95rem; }
+
+  section.block { margin-bottom: 2.25rem; }
+  .section-label {
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); font-weight: 700; margin: 0 0 0.9rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-label::after {
+    content: ""; flex: 1; height: 1px; background: var(--card-border);
+  }
+
+  .qcard {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-left: 3px solid var(--gold-bg);
+    border-radius: 6px;
+    padding: 1.15rem 1.25rem 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .qnum {
+    font-family: Georgia, serif;
+    font-weight: 700; color: var(--gold);
+    font-size: 0.85rem; margin-right: 0.4rem;
+  }
+  .qtext {
+    font-size: 1.02rem; line-height: 1.5; margin: 0 0 0.9rem;
+    color: var(--ink);
+  }
+  .hint { font-size: 0.82rem; color: var(--ink-soft); margin: -0.5rem 0 0.9rem; font-style: italic; }
+
+  .options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .option {
+    display: flex; align-items: center; gap: 0.65rem;
+    border: 1px solid var(--card-border);
+    border-radius: 5px; padding: 0.55rem 0.75rem;
+    cursor: pointer; font-size: 0.94rem;
+    background: transparent;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  @media (prefers-reduced-motion: reduce) { .option { transition: none; } }
+  .option:hover { border-color: var(--gold); }
+  .option input { accent-color: var(--gold-bg); width: 16px; height: 16px; flex-shrink: 0; }
+  .option.locked { cursor: default; }
+  .option.correct-pick { border-color: var(--success); background: var(--success-bg); }
+  .option.wrong-pick { border-color: var(--danger); background: var(--danger-bg); }
+  .option.reveal-correct { border-color: var(--success); }
+
+  .tf-row { display: flex; gap: 0.6rem; }
+  .tf-btn {
+    flex: 1; padding: 0.6rem; text-align: center; border-radius: 5px;
+    border: 1px solid var(--card-border); cursor: pointer; font-size: 0.94rem;
+    background: transparent; color: var(--ink); font-family: inherit;
+  }
+  .tf-btn:hover { border-color: var(--gold); }
+  .tf-btn.correct-pick { border-color: var(--success); background: var(--success-bg); }
+  .tf-btn.wrong-pick { border-color: var(--danger); background: var(--danger-bg); }
+  .tf-btn.reveal-correct { border-color: var(--success); }
+  .tf-btn:disabled { cursor: default; }
+
+  .num-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .num-field { flex: 1; min-width: 140px; }
+  .num-field label { display: block; font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 0.3rem; }
+  .num-field input {
+    width: 100%; padding: 0.55rem 0.65rem; border-radius: 5px;
+    border: 1px solid var(--card-border); background: var(--paper); color: var(--ink);
+    font-size: 0.95rem; font-variant-numeric: tabular-nums; font-family: inherit;
+  }
+
+  select.dd {
+    padding: 0.5rem 0.6rem; border-radius: 5px; border: 1px solid var(--card-border);
+    background: var(--paper); color: var(--ink); font-size: 0.92rem; font-family: inherit;
+    margin: 0 0.35rem 0.5rem 0;
+  }
+  .match-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.55rem; font-size: 0.95rem; flex-wrap: wrap; }
+  .match-row .mlabel { min-width: 110px; font-weight: 600; }
+
+  textarea.reflect {
+    width: 100%; min-height: 80px; padding: 0.6rem 0.7rem; border-radius: 5px;
+    border: 1px solid var(--card-border); background: var(--paper); color: var(--ink);
+    font-size: 0.94rem; font-family: inherit; resize: vertical;
+  }
+
+  button.submit, button.retake {
+    font-family: inherit; font-size: 0.95rem; font-weight: 700;
+    padding: 0.75rem 1.75rem; border-radius: 6px; cursor: pointer;
+    border: 1px solid var(--gold-bg);
+    background: var(--gold-bg); color: #1a1506;
+  }
+  button.retake { background: transparent; color: var(--gold); margin-left: 0.6rem; }
+  button.submit:focus-visible, button.retake:focus-visible,
+  .option input:focus-visible, .tf-btn:focus-visible, select.dd:focus-visible,
+  textarea.reflect:focus-visible, .num-field input:focus-visible {
+    outline: 2px solid var(--focus); outline-offset: 2px;
+  }
+
+  .feedback {
+    margin-top: 0.85rem; padding: 0.7rem 0.85rem; border-radius: 5px;
+    font-size: 0.9rem; line-height: 1.5; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.good { background: var(--success-bg); color: var(--success); }
+  .feedback.bad { background: var(--danger-bg); color: var(--danger); }
+  .feedback.info { background: var(--card); border: 1px solid var(--card-border); color: var(--ink-soft); }
+  .feedback .fictitle { font-weight: 700; display: block; margin-bottom: 0.2rem; }
+
+  .results {
+    text-align: center; padding: 2.25rem 1.5rem 2.5rem;
+    border-top: 1px solid var(--card-border); margin-top: 1rem;
+  }
+  .results .score {
+    font-family: Georgia, serif; font-weight: 700; font-size: 2.6rem;
+    color: var(--navy); font-variant-numeric: tabular-nums;
+    display: none;
+  }
+  .results .score.show { display: block; }
+  :root[data-theme="dark"] .results .score { color: var(--ink); }
+  :root[data-theme="light"] .results .score { color: var(--navy); }
+  @media (prefers-color-scheme: dark) { .results .score { color: var(--ink); } }
+  .results .score small { font-size: 1.1rem; color: var(--ink-soft); font-weight: 400; }
+  .results p { color: var(--ink-soft); max-width: 42ch; margin: 0.9rem auto 0; line-height: 1.5; }
+  .results .note { font-size: 0.82rem; margin-top: 1rem; }
+  .results .actions { margin-top: 1.4rem; }
+</style>
+
+<div class="topbar">
+  <div>
+    <div class="eyebrow">Skool Trading Academy</div>
+    <h1>Quiz 1 &middot; Week 1 Recap</h1>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressText">0 / 12 answered</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+</div>
+
+<main>
+  <div class="masthead">
+    <div class="eyebrow">Day 7</div>
+    <h1>Let's lock in what you learned</h1>
+    <p>Twelve questions covering TradingView, currency pairs, sessions, and pips/lots/leverage &mdash; plus a real look back at the exact trade you copied on Day 2. Fill in every question, then submit once at the bottom to see how you did.</p>
+  </div>
+
+  <section class="block">
+    <p class="section-label">Section 1 &mdash; TradingView Platform Basics</p>
+
+    <div class="qcard" data-qid="1" data-explain="Switching to a higher timeframe shows the bigger picture trend &mdash; the chart itself doesn't change, just how much time each candle represents.">
+      <p class="qtext"><span class="qnum">1.</span>You want to zoom out and see the bigger trend on a pair before deciding whether to look for a buy or a sell. Which of these lets you do that on TradingView?</p>
+      <div class="options" data-type="mc" data-correct="B">
+        <label class="option"><input type="radio" name="q1" value="A"> A) Changing the chart color scheme</label>
+        <label class="option"><input type="radio" name="q1" value="B"> B) Switching to a higher timeframe (e.g. from 15M to H4 or Daily)</label>
+        <label class="option"><input type="radio" name="q1" value="C"> C) Adding more indicators to the chart</label>
+        <label class="option"><input type="radio" name="q1" value="D"> D) Refreshing the page</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qcard" data-qid="2" data-explain="Candlesticks show open/high/low/close (OHLC) for the period. A line chart only connects the closing prices, so it hides everything that happened in between.">
+      <p class="qtext"><span class="qnum">2.</span>True or False: A candlestick chart shows you the open, high, low, and close price for a given period, while a line chart only shows the closing price.</p>
+      <div class="tf-row" data-type="tf" data-correct="True">
+        <button class="tf-btn" data-val="True" type="button">True</button>
+        <button class="tf-btn" data-val="False" type="button">False</button>
+      </div>
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="section-label">Section 2 &mdash; Currency Pairs &amp; Majors</p>
+
+    <div class="qcard" data-qid="3" data-explain="GBP is the base currency, the one implied &ldquo;1&rdquo; on the left. USD is the quote currency, how much of it you get for 1 unit of the base.">
+      <p class="qtext"><span class="qnum">3.</span>In the pair GBP/USD, which currency is the <b>base currency</b>?</p>
+      <div class="options" data-type="mc" data-correct="A">
+        <label class="option"><input type="radio" name="q3" value="A"> A) GBP</label>
+        <label class="option"><input type="radio" name="q3" value="B"> B) USD</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qcard" data-qid="4" data-explain="USD/JPY includes the US dollar. The other three are all cross pairs, no USD in any of them.">
+      <p class="qtext"><span class="qnum">4.</span>Which of the following is a major currency pair (i.e. it includes the US dollar)?</p>
+      <div class="options" data-type="mc" data-correct="C">
+        <label class="option"><input type="radio" name="q4" value="A"> A) EUR/GBP</label>
+        <label class="option"><input type="radio" name="q4" value="B"> B) AUD/NZD</label>
+        <label class="option"><input type="radio" name="q4" value="C"> C) USD/JPY</label>
+        <label class="option"><input type="radio" name="q4" value="D"> D) GBP/AUD</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qcard" data-qid="5" data-explain="Going long means you expect the base currency (GBP) to appreciate against the quote currency (USD).">
+      <p class="qtext"><span class="qnum">5.</span>If you buy (go long) GBP/USD, what are you expecting to happen?</p>
+      <div class="options" data-type="mc" data-correct="B">
+        <label class="option"><input type="radio" name="q5" value="A"> A) The pound to depreciate while the dollar appreciates</label>
+        <label class="option"><input type="radio" name="q5" value="B"> B) The pound to appreciate while the dollar depreciates</label>
+        <label class="option"><input type="radio" name="q5" value="C"> C) Both currencies to stay flat</label>
+        <label class="option"><input type="radio" name="q5" value="D"> D) The spread to widen</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="section-label">Section 3 &mdash; Trading Sessions</p>
+
+    <div class="qcard" data-qid="6" data-explain="The market runs 24 hours a day during the week, from 5:00 PM Sunday to 5:00 PM Friday, Eastern Time, then it closes for the weekend.">
+      <p class="qtext"><span class="qnum">6.</span>Roughly what hours is the forex market open during the week (in Eastern Time)?</p>
+      <div class="options" data-type="mc" data-correct="B">
+        <label class="option"><input type="radio" name="q6" value="A"> A) 9 AM &ndash; 5 PM ET, weekdays only</label>
+        <label class="option"><input type="radio" name="q6" value="B"> B) 5 PM Sunday to 5 PM Friday ET, 24 hours a day</label>
+        <label class="option"><input type="radio" name="q6" value="C"> C) 24 hours a day, 7 days a week including weekends</label>
+        <label class="option"><input type="radio" name="q6" value="D"> D) Only during New York Stock Exchange hours</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qcard" data-qid="7" data-reveal="Any reasonable answer works here &mdash; e.g. liquidity and volatility change by session, major pairs move more when their &ldquo;home&rdquo; session is active (like GBP pairs during London), and session overlaps (London/New York) tend to bring the sharpest moves.">
+      <p class="qtext"><span class="qnum">7.</span>Why does it matter which trading session you're active in (e.g. Sydney, Tokyo, London, New York)? Give one reason in your own words.</p>
+      <p class="hint">This one's about your own reasoning, not a single right answer.</p>
+      <textarea class="reflect" data-type="reflect" placeholder="Type your thinking here..."></textarea>
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="section-label">Section 4 &mdash; Pips, Lots &amp; Leverage</p>
+
+    <div class="qcard" data-qid="8" data-explain="Pip = &ldquo;percentage in point&rdquo; or &ldquo;price interest point.&rdquo; Most pairs use the 4th decimal place, but Yen pairs are the exception, they use the 2nd.">
+      <p class="qtext"><span class="qnum">8.</span>For most currency pairs, a pip is measured at which decimal place?</p>
+      <div class="options" data-type="mc" data-correct="C">
+        <label class="option"><input type="radio" name="q8" value="A"> A) 2nd decimal place</label>
+        <label class="option"><input type="radio" name="q8" value="B"> B) 3rd decimal place</label>
+        <label class="option"><input type="radio" name="q8" value="C"> C) 4th decimal place</label>
+        <label class="option"><input type="radio" name="q8" value="D"> D) 5th decimal place</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qcard" data-qid="9" data-explain="Standard lot = 100,000 units. Mini lot = 10,000 units. Micro lot = 1,000 units. (Day 2's 0.01 lot trade was a micro lot, the smallest size most platforms allow.)">
+      <p class="qtext"><span class="qnum">9.</span>Match each lot size to its unit amount.</p>
+      <div class="match-set" data-type="match">
+        <div class="match-row"><span class="mlabel">Standard lot &rarr;</span>
+          <select class="dd" data-correct="100000">
+            <option value="">Choose...</option>
+            <option value="1000">1,000 units</option>
+            <option value="10000">10,000 units</option>
+            <option value="100000">100,000 units</option>
+          </select>
+        </div>
+        <div class="match-row"><span class="mlabel">Mini lot &rarr;</span>
+          <select class="dd" data-correct="10000">
+            <option value="">Choose...</option>
+            <option value="1000">1,000 units</option>
+            <option value="10000">10,000 units</option>
+            <option value="100000">100,000 units</option>
+          </select>
+        </div>
+        <div class="match-row"><span class="mlabel">Micro lot &rarr;</span>
+          <select class="dd" data-correct="1000">
+            <option value="">Choose...</option>
+            <option value="1000">1,000 units</option>
+            <option value="10000">10,000 units</option>
+            <option value="100000">100,000 units</option>
+          </select>
+        </div>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qcard" data-qid="10" data-reveal="1:100 leverage means you can control a position 100x larger than your actual deposited capital (e.g. $1,000 controls a $100,000 position). The trade-off: it magnifies both potential profit AND potential loss, so poor risk management gets punished much faster at higher leverage.">
+      <p class="qtext"><span class="qnum">10.</span>If your broker offers 1:100 leverage, what does that actually mean for your buying power, and what's the trade-off that comes with using higher leverage?</p>
+      <p class="hint">Reasoning question, no single right answer expected.</p>
+      <textarea class="reflect" data-type="reflect" placeholder="Type your thinking here..."></textarea>
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="section-label">Section 5 &mdash; Connecting It Back to Day 2</p>
+
+    <div class="qcard" data-qid="11" data-explain="10 points of risk (4,175.00 to 4,165.00) and 20 points of reward (4,175.00 to 4,195.00), a clean 1:2 ratio. Everyone copied the same signal, so this has one correct answer.">
+      <p class="qtext"><span class="qnum">11.</span>On Day 2, you copied a signal (BUY XAU/USD, Entry 4,175.00 / SL 4,165.00 / TP 4,195.00). How many points was your Stop Loss from entry, and how many points was your Take Profit from entry?</p>
+      <p class="hint">Think in points here, not pips, gold isn't quoted like a standard currency pair.</p>
+      <div class="num-row" data-type="num" data-correct-risk="10" data-correct-reward="20">
+        <div class="num-field">
+          <label>Points of risk (Entry &rarr; SL)</label>
+          <input type="number" inputmode="decimal" placeholder="e.g. 10">
+        </div>
+        <div class="num-field">
+          <label>Points of reward (Entry &rarr; TP)</label>
+          <input type="number" inputmode="decimal" placeholder="e.g. 20">
+        </div>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qcard" data-qid="12" data-reveal="Position sizing based on account risk % (not just a fixed small lot), a defined risk-to-reward ratio, and awareness of max exposure, all covered properly in Week 3 (Days 18-19).">
+      <p class="qtext"><span class="qnum">12.</span>We said &ldquo;full risk math comes in Week 3.&rdquo; Based on what you now know, what do you think is still missing from your Day 2 trade that a fully risk-managed trade would need?</p>
+      <p class="hint">No wrong answers here, just think it through.</p>
+      <textarea class="reflect" data-type="reflect" placeholder="Type your thinking here..."></textarea>
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <div class="results" id="results">
+    <div class="score" id="scoreBlock"><span id="scoreVal">0</span><small> / 9 objective questions</small></div>
+    <p id="resultsMsg">Fill in the questions above, then submit to see your score and every explanation at once.</p>
+    <p class="note" id="reflectNote"></p>
+    <div class="actions">
+      <button class="submit" id="submitBtn" type="button">Submit Quiz</button>
+      <button class="retake" id="retakeBtn" type="button" style="display:none;">Retake Quiz</button>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  var OBJECTIVE_TOTAL = 9; // q1,2,3,4,5,6,8,9,11
+  var submitted = false;
+
+  function cardIsAnswered(card) {
+    var typeEl = card.querySelector('[data-type]');
+    var type = typeEl.dataset.type;
+    if (type === 'mc') return !!typeEl.querySelector('input:checked');
+    if (type === 'tf') return !!typeEl.querySelector('.tf-btn.picked');
+    if (type === 'match') {
+      var sels = typeEl.querySelectorAll('select');
+      var ok = true;
+      sels.forEach(function (s) { if (!s.value) ok = false; });
+      return ok;
+    }
+    if (type === 'num') {
+      var inputs = typeEl.querySelectorAll('input');
+      return inputs[0].value.trim() !== '' && inputs[1].value.trim() !== '';
+    }
+    if (type === 'reflect') return card.querySelector('textarea').value.trim() !== '';
+    return false;
+  }
+
+  function updateProgress() {
+    var cards = document.querySelectorAll('.qcard');
+    var answered = 0;
+    cards.forEach(function (c) { if (cardIsAnswered(c)) answered++; });
+    document.getElementById('progressText').textContent = answered + ' / 12 answered';
+    document.getElementById('progressFill').style.width = (answered / 12 * 100) + '%';
+  }
+
+  function gradeCard(card) {
+    var wrap = card.querySelector('[data-type]');
+    var type = wrap.dataset.type;
+    var feedback = card.querySelector('.feedback');
+
+    if (type === 'reflect') {
+      feedback.className = 'feedback show info';
+      feedback.innerHTML = '<span class="fictitle">Example answer</span>' + card.dataset.reveal;
+      card.querySelector('textarea').disabled = true;
+      return null; // not scored
+    }
+
+    var correct = false;
+
+    if (type === 'mc') {
+      var picked = wrap.querySelector('input:checked');
+      var correctVal = wrap.dataset.correct;
+      correct = !!picked && picked.value === correctVal;
+      wrap.querySelectorAll('.option').forEach(function (opt) {
+        var input = opt.querySelector('input');
+        input.disabled = true;
+        opt.classList.add('locked');
+        if (input.value === correctVal) opt.classList.add('reveal-correct');
+        if (picked && input === picked && !correct) opt.classList.add('wrong-pick');
+        if (picked && input === picked && correct) opt.classList.add('correct-pick');
+      });
+    }
+
+    if (type === 'tf') {
+      var picked = wrap.querySelector('.tf-btn.picked');
+      var correctVal = wrap.dataset.correct;
+      correct = !!picked && picked.dataset.val === correctVal;
+      wrap.querySelectorAll('.tf-btn').forEach(function (btn) {
+        btn.disabled = true;
+        if (btn.dataset.val === correctVal) btn.classList.add('reveal-correct');
+        if (picked && btn === picked && !correct) btn.classList.add('wrong-pick');
+        if (picked && btn === picked && correct) btn.classList.add('correct-pick');
+      });
+    }
+
+    if (type === 'match') {
+      var selects = wrap.querySelectorAll('select');
+      var allCorrect = true, anyFilled = false;
+      selects.forEach(function (s) {
+        if (s.value) anyFilled = true;
+        if (s.value !== s.dataset.correct) allCorrect = false;
+        s.disabled = true;
+      });
+      correct = anyFilled && allCorrect;
+    }
+
+    if (type === 'num') {
+      var inputs = wrap.querySelectorAll('input');
+      var riskVal = inputs[0].value.trim();
+      var rewardVal = inputs[1].value.trim();
+      correct = riskVal !== '' && rewardVal !== '' &&
+                parseFloat(riskVal) === parseFloat(wrap.dataset.correctRisk) &&
+                parseFloat(rewardVal) === parseFloat(wrap.dataset.correctReward);
+      inputs.forEach(function (i) { i.disabled = true; });
+    }
+
+    feedback.className = 'feedback show ' + (correct ? 'good' : 'bad');
+    feedback.innerHTML = '<span class="fictitle">' + (correct ? 'Correct.' : (cardIsAnswered(card) ? 'Not quite.' : 'No answer selected.')) + '</span>' + card.dataset.explain;
+    return correct;
+  }
+
+  function submitQuiz() {
+    if (submitted) return;
+    submitted = true;
+    var score = 0;
+    document.querySelectorAll('.qcard').forEach(function (card) {
+      var result = gradeCard(card);
+      if (result === true) score++;
+    });
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('scoreBlock').classList.add('show');
+
+    var msg = document.getElementById('resultsMsg');
+    if (score === OBJECTIVE_TOTAL) {
+      msg.textContent = 'Perfect on the objective questions. Week 1 foundation is solid, on to Week 2.';
+    } else if (score >= OBJECTIVE_TOTAL - 2) {
+      msg.textContent = 'Strong recap. Skim back over the ones you missed before Week 2 starts.';
+    } else {
+      msg.textContent = 'Worth another pass through Days 3-6 before moving on, no rush.';
+    }
+    document.getElementById('reflectNote').textContent = '3 reflection questions reviewed above with example answers.';
+    document.getElementById('submitBtn').style.display = 'none';
+    document.getElementById('retakeBtn').style.display = 'inline-block';
+
+    document.getElementById('results').scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'start'
+    });
+  }
+
+  document.querySelectorAll('.tf-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.disabled) return;
+      var wrap = btn.closest('.tf-row');
+      wrap.querySelectorAll('.tf-btn').forEach(function (b) { b.classList.remove('picked'); });
+      btn.classList.add('picked');
+      updateProgress();
+    });
+  });
+
+  document.querySelectorAll('input[type="radio"], select.dd, input[type="number"]').forEach(function (el) {
+    el.addEventListener('change', updateProgress);
+  });
+  document.querySelectorAll('textarea.reflect').forEach(function (el) {
+    el.addEventListener('input', updateProgress);
+  });
+
+  document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+  document.getElementById('retakeBtn').addEventListener('click', function () {
+    window.location.reload();
+  });
+
+  updateProgress();
+})();
+</script>
