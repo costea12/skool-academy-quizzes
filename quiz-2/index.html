@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quiz 2: Week 2 Recap — Skool Trading Academy</title>
+<style>
+  :root {
+    --baby-pink: #FCE9E6;
+    --deep-berry: #6B2545;
+    --berry-panel: #8C3A5C;
+    --rose-gold: #D9847E;
+    --rose-gold-light: #E8AFA2;
+    --text-dark: #4A2530;
+    --text-muted: #7A4A56;
+    --light-text-on-dark: #F7DCE4;
+    --white: #FFFFFF;
+    --correct: #2E9E6B;
+    --incorrect: #D6484F;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--baby-pink);
+    font-family: "Trebuchet MS", Verdana, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.5;
+  }
+
+  .header {
+    background: var(--deep-berry);
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    color: var(--rose-gold-light);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    color: var(--white);
+    font-size: clamp(28px, 5vw, 42px);
+    margin: 14px 0 10px;
+  }
+
+  .header p {
+    color: var(--light-text-on-dark);
+    font-style: italic;
+    font-size: clamp(14px, 2vw, 18px);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .intro {
+    background: var(--white);
+    border: 1px solid var(--rose-gold);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+    font-size: 15.5px;
+    color: var(--text-dark);
+  }
+
+  .intro p { margin: 0 0 12px; }
+  .intro p:last-child { margin-bottom: 0; }
+
+  .section { margin-bottom: 34px; }
+
+  .section-title {
+    color: var(--deep-berry);
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid var(--rose-gold);
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+  }
+
+  .question {
+    background: var(--white);
+    border: 1px solid var(--rose-gold-light);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+
+  .question > p.qtext {
+    margin: 0 0 6px;
+    font-size: 15.5px;
+  }
+
+  .qnum { color: var(--rose-gold); font-weight: bold; margin-right: 6px; }
+
+  /* Multiple choice options */
+  .options { margin: 12px 0 0; display: flex; flex-direction: column; gap: 8px; }
+
+  .opt {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--rose-gold-light);
+    border-radius: 8px;
+    background: var(--baby-pink);
+    cursor: pointer;
+    font-size: 14.5px;
+    color: var(--text-dark);
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .opt:hover { border-color: var(--rose-gold); transform: translateX(2px); }
+
+  .opt b { color: var(--deep-berry); }
+
+  .opt.correct { background: #E3F3EC; border-color: var(--correct); }
+  .opt.correct b, .opt.correct span { color: var(--correct); font-weight: bold; }
+
+  .opt.incorrect { background: #FBE7E6; border-color: var(--incorrect); opacity: 0.75; }
+
+  .opt.disabled { pointer-events: none; }
+
+  /* Tap-to-reveal for text/short-answer questions */
+  .reveal-chip {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 16px;
+    background: var(--rose-gold-light);
+    color: var(--deep-berry);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+  }
+
+  .reveal-chip:hover { background: var(--rose-gold); color: var(--white); }
+  .reveal-chip.hidden { display: none; }
+
+  .inline-answer {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #F3D9D4;
+    border-left: 4px solid var(--rose-gold);
+    border-radius: 0 8px 8px 0;
+    font-size: 14.5px;
+    color: var(--text-dark);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .inline-answer.visible { display: block; }
+  .inline-answer b { color: var(--deep-berry); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal-row { text-align: center; margin: 44px 0; }
+
+  #reveal-all-btn {
+    background: var(--deep-berry);
+    color: var(--white);
+    border: none;
+    border-radius: 30px;
+    padding: 16px 38px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  #reveal-all-btn:hover { background: var(--berry-panel); transform: translateY(-2px); }
+  #reveal-all-btn:active { transform: translateY(0); }
+
+  .recap {
+    background: var(--deep-berry);
+    border-radius: 16px;
+    padding: 30px 32px;
+    margin-top: 48px;
+    color: var(--white);
+  }
+
+  .recap h2 { color: var(--rose-gold-light); font-size: 22px; margin-top: 0; }
+  .recap p { font-size: 15px; color: var(--light-text-on-dark); line-height: 1.6; }
+
+  .recap .homework {
+    background: var(--berry-panel);
+    border: 1px solid var(--rose-gold);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 16px;
+    font-size: 15px;
+    color: var(--white);
+  }
+
+  .recap .homework b { color: var(--rose-gold-light); }
+
+  .closing {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--berry-panel);
+    font-style: italic;
+    font-weight: bold;
+    font-size: 17px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="eyebrow">SKOOL TRADING ACADEMY &nbsp;❤&nbsp; 31-DAY BOOTCAMP</div>
+    <h1>Quiz 2: Week 2 Recap</h1>
+    <p>Day 15 · Locking in everything from risk management to supply &amp; demand.</p>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <p>You've made it through Week 2, the biggest content week so far. You started with risk management, the skill that keeps you in the game, then moved into reading the chart itself: candlestick anatomy, bearish and bullish reversal patterns, support and resistance, and supply and demand. Before Week 3 stacks the full Confluence strategy on top of all this, let's lock it in.</p>
+      <p>Take your time. Reference your notes from Days 8-14 if you need to. <b>Tap any answer option, or the "Show Answer" button, to check yourself as you go</b> — or use the button at the very end to reveal everything at once.</p>
+    </div>
+
+    <div id="quiz-root"></div>
+
+    <div class="reveal-row">
+      <button id="reveal-all-btn" onclick="revealAll()">Reveal All Answers</button>
+    </div>
+
+    <div class="recap">
+      <h2>Week 2 Recap &amp; Homework</h2>
+      <p>You now have a full toolkit for reading a chart: candlestick anatomy, reversal patterns in both directions, support and resistance, and supply and demand, all backed by real risk management so you're protecting your capital while you use it.</p>
+      <div class="homework">
+        <b>Your homework:</b> pull up any chart on TradingView and mark it up yourself. Find at least one candlestick reversal pattern, one support or resistance level, and one supply or demand zone, all on the same chart. Write one sentence on each explaining why you marked it. This is the same chart-reading process you'll be running for real starting Week 3.
+      </div>
+    </div>
+
+    <div class="closing">Fourteen lessons down. Seventeen days to go. ❤</div>
+
+  </div>
+
+<script>
+  // Each question: type "mc" (multiple choice, clickable options) or "text" (short answer / true-false, tap-to-reveal).
+  var sections = [
+    {
+      title: "Section 1: Risk Management Fundamentals (Day 8)",
+      questions: [
+        { type: "mc", q: "What is \"risk capital\"?",
+          options: [
+            "Money you plan to double quickly with aggressive trades",
+            "The amount you're truly comfortable losing, based on what you can afford without it affecting your life",
+            "Your entire savings account balance",
+            "The minimum deposit your broker requires"
+          ], correct: 1,
+          a: "Risk capital is the amount of money you're truly comfortable losing, based on a percentage of your net worth you could afford to lose without it affecting your life, not money you need for rent, food, or emergencies." },
+        { type: "mc", q: "What's the general recommended risk-per-trade range?",
+          options: ["10-20%", "1-2%", "25-50%", "0.01-0.05%"], correct: 1,
+          a: "1-2% per trade is the general rule, though many experienced traders risk even less (0.5-1%) for more room for error." }
+      ]
+    },
+    {
+      title: "Section 2: Risk:Reward + Max Exposure (Day 9)",
+      questions: [
+        { type: "mc", q: "At a 1:2 risk-to-reward ratio, roughly what win rate do you need just to break even?",
+          options: ["About 70%", "About 50%", "About 33%", "About 10%"], correct: 2,
+          a: "About 33% (one in three trades), because at 1:2 you only need to win roughly a third of your trades to come out ahead." },
+        { type: "mc", q: "If your maximum exposure is 5% and you risk 1% per trade, how many trades can you have open at once?",
+          options: ["1", "3", "5", "10"], correct: 2,
+          a: "5% max exposure ÷ 1% risk per trade = 5 simultaneous trades." }
+      ]
+    },
+    {
+      title: "Section 3: Candlestick Anatomy (Day 10)",
+      questions: [
+        { type: "mc", q: "True or False: A doji candle signals strong momentum in one direction.",
+          options: ["True", "False"], correct: 1,
+          a: "False — a doji signals indecision, not momentum. The tiny body means the open and close landed almost exactly the same, a tug-of-war with no clear winner." },
+        { type: "mc", q: "What do the wicks on a candle represent?",
+          options: [
+            "The open and close price",
+            "The highest and lowest price reached during that period",
+            "The trading volume for that period",
+            "The average price over the period"
+          ], correct: 1,
+          a: "The wicks mark the highest and lowest price reached during that candle's period, the upper wick is the high, the lower wick is the low." }
+      ]
+    },
+    {
+      title: "Section 4: Bearish Reversal Patterns (Day 11)",
+      questions: [
+        { type: "mc", q: "Which of these is a highly reliable bearish reversal pattern?",
+          options: ["Belt Hold", "Dark Cloud Cover", "Harami", "Shooting Star"], correct: 1,
+          a: "Dark Cloud Cover is in the highly reliable tier. Belt Hold, Harami, and Shooting Star are all weaker patterns on their own." },
+        { type: "mc", q: "What makes Dark Cloud Cover a reliable warning sign?",
+          options: [
+            "It's one huge red candle with no wick at all",
+            "It opens strong above the prior close, but closes weak below the midpoint of the prior candle's body",
+            "It only ever forms on the weekly chart",
+            "It always repeats exactly three times before a reversal"
+          ], correct: 1,
+          a: "It opens strong, above the previous candle's close, suggesting the uptrend is continuing, but then closes weak, below the midpoint of the previous candle's body. That failed follow-through is what makes it reliable." }
+      ]
+    },
+    {
+      title: "Section 5: Bullish Reversal Patterns (Day 12)",
+      questions: [
+        { type: "mc", q: "Which pattern is only moderately reliable, unlike its \"doji\" cousin which is highly reliable?",
+          options: ["Morning Star", "Three White Soldiers", "Bullish Engulfing", "Hammer"], correct: 0,
+          a: "Morning Star is only moderately reliable. Only the doji version, Morning Doji Star, makes the highly reliable tier. Don't assume every bullish pattern mirrors its bearish counterpart in reliability." },
+        { type: "mc", q: "What's the key difference between a Hammer and a Shooting Star?",
+          options: [
+            "A Hammer only forms in uptrends, a Shooting Star only in downtrends",
+            "Same shape, flipped: a Hammer has a long lower wick (bullish), a Shooting Star has a long upper wick (bearish)",
+            "A Hammer is bearish and a Shooting Star is bullish",
+            "There's no real difference, they're the same pattern"
+          ], correct: 1,
+          a: "Same shape, flipped. A Hammer has a small body near the top and a long lower wick (bullish, buyers absorbed selling pressure). A Shooting Star has a small body near the bottom and a long upper wick (bearish, sellers absorbed buying pressure)." }
+      ]
+    },
+    {
+      title: "Section 6: Support &amp; Resistance (Day 13)",
+      questions: [
+        { type: "mc", q: "Which four are the \"secret rules\" of support &amp; resistance?",
+          options: [
+            "Multiple rejections, move away from the swing, a level can flip sides, stay near the current price",
+            "Trend lines, moving averages, Fibonacci levels, volume spikes",
+            "Daily highs, weekly highs, monthly highs, yearly highs",
+            "Entry, stop loss, take profit, risk-to-reward"
+          ], correct: 0,
+          a: "Multiple rejections, move away from the swing, a level can flip sides (support becomes resistance or vice versa), and stay near the current price." },
+        { type: "mc", q: "True or False: A support or resistance level is always one exact price, never a zone.",
+          options: ["True", "False"], correct: 1,
+          a: "False — a level is usually closer to a zone or area than one exact price. Don't be surprised when price doesn't respect a line down to the pip." }
+      ]
+    },
+    {
+      title: "Section 7: Supply &amp; Demand (Day 14)",
+      questions: [
+        { type: "mc", q: "Which is stronger, a fresh zone or a zone that's already been tested four times?",
+          options: ["The fresh zone", "The zone tested four times", "They're equally strong"], correct: 0,
+          a: "The fresh zone is stronger. Every touch absorbs some of the original imbalance, by the third or fourth touch the zone behaves like an ordinary support or resistance level instead." },
+        { type: "mc", q: "Which three qualities make a strong zone?",
+          options: [
+            "High volume, long wicks, multiple touches",
+            "A sharp departure, a tight base, and freshness (not tested multiple times)",
+            "Round numbers, session opens, news events",
+            "Trend direction, timeframe, indicator confirmation"
+          ], correct: 1,
+          a: "A sharp departure (an explosive, decisive move away), a tight base (a narrow area, not sprawling), and freshness (not tested multiple times already)." }
+      ]
+    },
+    {
+      title: "Section 8: Connecting It Back to Day 2",
+      questions: [
+        { type: "mc", q: "Your Day 2 trade (BUY XAU/USD, Entry 4,175.00, SL 4,165.00) had a 10-point stop. If you had a $10,000 account, risked 1% per trade, and gold moves $100 per point on a standard 1.00 lot, what lot size would properly reflect that 1% risk?",
+          options: ["0.01 lots", "0.10 lots", "1.00 lots", "0.05 lots"], correct: 1,
+          a: "0.10 lots. 1% of $10,000 is $100 of risk. Over a 10-point stop, that's $10 per point needed. Since a standard 1.00 lot moves $100 per point, $10 per point ÷ $100 per point = 0.10 lots, ten times bigger than the 0.01 \"training wheels\" lot actually used on Day 2." }
+      ]
+    }
+  ];
+
+  var root = document.getElementById("quiz-root");
+  var qCounter = 0;
+  var letters = ["A", "B", "C", "D"];
+
+  sections.forEach(function (section) {
+    var sec = document.createElement("div");
+    sec.className = "section";
+    var h = document.createElement("div");
+    h.className = "section-title";
+    h.innerHTML = section.title;
+    sec.appendChild(h);
+
+    section.questions.forEach(function (item) {
+      qCounter++;
+      var card = document.createElement("div");
+      card.className = "question";
+
+      var qp = document.createElement("p");
+      qp.className = "qtext";
+      qp.innerHTML = '<span class="qnum">' + qCounter + ".</span>" + item.q;
+      card.appendChild(qp);
+
+      var answerDiv = document.createElement("div");
+      answerDiv.className = "inline-answer";
+      answerDiv.innerHTML = "<b>Answer:</b> " + item.a;
+
+      if (item.type === "mc") {
+        var optWrap = document.createElement("div");
+        optWrap.className = "options";
+        item.options.forEach(function (optText, i) {
+          var opt = document.createElement("div");
+          opt.className = "opt";
+          opt.innerHTML = "<b>" + letters[i] + ")</b> <span>" + optText + "</span>";
+          optWrap.appendChild(opt);
+        });
+        var optEls = optWrap.querySelectorAll(".opt");
+        optEls.forEach(function (opt, i) {
+          opt.onclick = function () {
+            if (opt.classList.contains("disabled")) return;
+            optEls.forEach(function (o) { o.classList.add("disabled"); });
+            optEls[item.correct].classList.add("correct");
+            if (i !== item.correct) opt.classList.add("incorrect");
+            answerDiv.classList.add("visible");
+          };
+        });
+        card.appendChild(optWrap);
+      } else {
+        var chip = document.createElement("div");
+        chip.className = "reveal-chip";
+        chip.textContent = "Show Answer";
+        chip.onclick = function () {
+          answerDiv.classList.add("visible");
+          chip.classList.add("hidden");
+        };
+        card.appendChild(chip);
+      }
+
+      card.appendChild(answerDiv);
+      sec.appendChild(card);
+    });
+
+    root.appendChild(sec);
+  });
+
+  function revealAll() {
+    document.querySelectorAll(".inline-answer").forEach(function (el) { el.classList.add("visible"); });
+    document.querySelectorAll(".reveal-chip").forEach(function (el) { el.classList.add("hidden"); });
+    document.querySelectorAll(".opt").forEach(function (el) { el.classList.add("disabled"); });
+
+    var flatQuestions = [];
+    sections.forEach(function (s) { s.questions.forEach(function (q) { flatQuestions.push(q); }); });
+    var cards = document.querySelectorAll(".question");
+    cards.forEach(function (card, idx) {
+      var item = flatQuestions[idx];
+      if (item.type === "mc") {
+        var opts = card.querySelectorAll(".opt");
+        opts[item.correct].classList.add("correct");
+      }
+    });
+    document.getElementById("reveal-all-btn").textContent = "All Answers Revealed ✓";
+  }
+</script>
+
+</body>
+</html>
