@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quiz 3: Week 3 Recap — Skool Trading Academy</title>
+<style>
+  :root {
+    --baby-pink: #FCE9E6;
+    --deep-berry: #6B2545;
+    --berry-panel: #8C3A5C;
+    --rose-gold: #D9847E;
+    --rose-gold-light: #E8AFA2;
+    --text-dark: #4A2530;
+    --text-muted: #7A4A56;
+    --light-text-on-dark: #F7DCE4;
+    --white: #FFFFFF;
+    --correct: #2E9E6B;
+    --incorrect: #D6484F;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--baby-pink);
+    font-family: "Trebuchet MS", Verdana, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.5;
+  }
+
+  .header {
+    background: var(--deep-berry);
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    color: var(--rose-gold-light);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    color: var(--white);
+    font-size: clamp(28px, 5vw, 42px);
+    margin: 14px 0 10px;
+  }
+
+  .header p {
+    color: var(--light-text-on-dark);
+    font-style: italic;
+    font-size: clamp(14px, 2vw, 18px);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .intro {
+    background: var(--white);
+    border: 1px solid var(--rose-gold);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+    font-size: 15.5px;
+    color: var(--text-dark);
+  }
+
+  .intro p { margin: 0 0 12px; }
+  .intro p:last-child { margin-bottom: 0; }
+
+  .section { margin-bottom: 34px; }
+
+  .section-title {
+    color: var(--deep-berry);
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid var(--rose-gold);
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+  }
+
+  .question {
+    background: var(--white);
+    border: 1px solid var(--rose-gold-light);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+
+  .question > p.qtext {
+    margin: 0 0 6px;
+    font-size: 15.5px;
+  }
+
+  .qnum { color: var(--rose-gold); font-weight: bold; margin-right: 6px; }
+
+  /* Multiple choice options */
+  .options { margin: 12px 0 0; display: flex; flex-direction: column; gap: 8px; }
+
+  .opt {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--rose-gold-light);
+    border-radius: 8px;
+    background: var(--baby-pink);
+    cursor: pointer;
+    font-size: 14.5px;
+    color: var(--text-dark);
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .opt:hover { border-color: var(--rose-gold); transform: translateX(2px); }
+
+  .opt b { color: var(--deep-berry); }
+
+  .opt.correct { background: #E3F3EC; border-color: var(--correct); }
+  .opt.correct b, .opt.correct span { color: var(--correct); font-weight: bold; }
+
+  .opt.incorrect { background: #FBE7E6; border-color: var(--incorrect); opacity: 0.75; }
+
+  .opt.disabled { pointer-events: none; }
+
+  /* Tap-to-reveal for text/short-answer questions */
+  .reveal-chip {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 16px;
+    background: var(--rose-gold-light);
+    color: var(--deep-berry);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+  }
+
+  .reveal-chip:hover { background: var(--rose-gold); color: var(--white); }
+  .reveal-chip.hidden { display: none; }
+
+  .inline-answer {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #F3D9D4;
+    border-left: 4px solid var(--rose-gold);
+    border-radius: 0 8px 8px 0;
+    font-size: 14.5px;
+    color: var(--text-dark);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .inline-answer.visible { display: block; }
+  .inline-answer b { color: var(--deep-berry); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal-row { text-align: center; margin: 44px 0; }
+
+  #reveal-all-btn {
+    background: var(--deep-berry);
+    color: var(--white);
+    border: none;
+    border-radius: 30px;
+    padding: 16px 38px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  #reveal-all-btn:hover { background: var(--berry-panel); transform: translateY(-2px); }
+  #reveal-all-btn:active { transform: translateY(0); }
+
+  .recap {
+    background: var(--deep-berry);
+    border-radius: 16px;
+    padding: 30px 32px;
+    margin-top: 48px;
+    color: var(--white);
+  }
+
+  .recap h2 { color: var(--rose-gold-light); font-size: 22px; margin-top: 0; }
+  .recap p { font-size: 15px; color: var(--light-text-on-dark); line-height: 1.6; }
+
+  .recap .homework {
+    background: var(--berry-panel);
+    border: 1px solid var(--rose-gold);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 16px;
+    font-size: 15px;
+    color: var(--white);
+  }
+
+  .recap .homework b { color: var(--rose-gold-light); }
+
+  .closing {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--berry-panel);
+    font-style: italic;
+    font-weight: bold;
+    font-size: 17px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="eyebrow">SKOOL TRADING ACADEMY &nbsp;❤&nbsp; 32-DAY BOOTCAMP</div>
+    <h1>Quiz 3: Week 3 Recap</h1>
+    <p>Day 23 · Locking in the full Confluence toolkit, all six tools.</p>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <p>You've just finished Week 3, the week that turned everything you learned in Week 2 into an actual trading framework. Six confirmation tools, one process. Before Week 4 stacks them all together into a single checklist, let's lock it in.</p>
+      <p>Take your time. Reference your notes from Days 16-23 if you need to. <b>Tap any answer option to check yourself as you go</b> — or use the button at the very end to reveal everything at once.</p>
+    </div>
+
+    <div id="quiz-root"></div>
+
+    <div class="reveal-row">
+      <button id="reveal-all-btn" onclick="revealAll()">Reveal All Answers</button>
+    </div>
+
+    <div class="recap">
+      <h2>Week 3 Recap &amp; Homework</h2>
+      <p>You now have all six confirmation tools: Support &amp; Resistance, Supply &amp; Demand, Understanding Wicks, Fibonacci/PRZ, Break and Retest, and Timeframe Correlation. None of them work alone, and that's the entire point, confluence means several of them agreeing on the exact same spot before you risk a dollar.</p>
+      <div class="homework">
+        <b>Your homework:</b> pull up any chart on TradingView and find one spot where at least three of the six confirmation tools line up at the same price, past or present. Write one sentence naming each tool you found there. Week 4 turns this into your full trading checklist.
+      </div>
+    </div>
+
+    <div class="closing">Twenty-two lessons down. Ten days to go. ❤</div>
+
+  </div>
+
+<script>
+  // Each question: type "mc" (multiple choice, clickable options) or "text" (short answer / true-false, tap-to-reveal).
+  var sections = [
+    {
+      title: "Section 1: Best Timeframes for Trading (Day 16)",
+      questions: [
+        { type: "mc", q: "What are the three roles a timeframe plays in a trade?",
+          options: [
+            "Entry, stop loss, take profit",
+            "Bias, confirmation, sniper entry",
+            "Daily, weekly, monthly",
+            "Trend, momentum, volume"
+          ], correct: 1,
+          a: "Bias (Daily/H4), confirmation (H1/M15), and sniper entry (M15/M5). Skip any one role and you're trading half-blind." },
+        { type: "mc", q: "True or False: The Weekly timeframe is useful for everyday intraday trading decisions.",
+          options: ["True", "False"], correct: 1,
+          a: "False — unless you're holding for weeks or months, skip the Weekly entirely. It's built for position traders, not intraday decisions." }
+      ]
+    },
+    {
+      title: "Section 2: Combining Candles + S/R (Day 17)",
+      questions: [
+        { type: "mc", q: "In the worked sell example, which three confirmations lined up at once?",
+          options: [
+            "Volume, RSI, MACD",
+            "A key resistance level, a bearish engulfing candle, and a moving average crossover",
+            "A trendline, a Fibonacci level, and a support zone",
+            "Wick length, body size, and close price"
+          ], correct: 1,
+          a: "A key resistance level that had already rejected price twice, a bearish engulfing candle, and a moving average crossover. Three confirmations, not one." },
+        { type: "mc", q: "True or False: Both worked examples placed their stop loss at a random distance that just \"felt safe.\"",
+          options: ["True", "False"], correct: 1,
+          a: "False — both stops were placed based on market structure (above the resistance level, below the last higher low), not a guess." }
+      ]
+    },
+    {
+      title: "Section 3: Confluence Trading + Wicks (Day 18)",
+      questions: [
+        { type: "mc", q: "What is confluence trading?",
+          options: [
+            "Trading based on one strong signal",
+            "Combining multiple methods of analysis so they all point to the same conclusion at the same spot",
+            "Only trading on the Daily chart",
+            "A specific candlestick pattern"
+          ], correct: 1,
+          a: "Confluence trading means combining multiple methods of analysis so they all point to the same conclusion at the same spot on the chart, instead of relying on one signal." },
+        { type: "mc", q: "True or False: Trend lines and Fibonacci retracements should be anchored on candle bodies, not wicks.",
+          options: ["True", "False"], correct: 1,
+          a: "False — always wick to wick. Anchoring on candle bodies shifts every level the tool generates off the real reaction point." }
+      ]
+    },
+    {
+      title: "Section 4: Fibonacci / PRZ (Day 19)",
+      questions: [
+        { type: "mc", q: "For an uptrend, drawn from the low to the high, which end is 0% and which is 100%?",
+          options: [
+            "0% at the high, 100% at the low",
+            "0% at the low, 100% at the high",
+            "It doesn't matter which end is which",
+            "Both ends are 50%"
+          ], correct: 1,
+          a: "0% sits at the low (where you start the drag), 100% at the high (where you finish). Get the direction backward and your whole PRZ lands on the wrong side of the market." },
+        { type: "mc", q: "Where does the PRZ (Price Reversal Zone) sit on the Fibonacci scale?",
+          options: ["Between 0% and 23.6%", "Between 38.2% and 61.8%", "Between 78.6% and 100%", "Exactly at 50%"], correct: 1,
+          a: "The PRZ sits between 38.2% and 61.8%, deep enough to represent a genuine pullback, shallow enough that the trend still has room to resume." }
+      ]
+    },
+    {
+      title: "Section 5: Supply &amp; Demand, Revisited (Day 20)",
+      questions: [
+        { type: "mc", q: "What's the recommended timeframe for drawing supply and demand zones as an intraday trader?",
+          options: ["M1 to M15", "H4 or H1/H2", "Weekly", "Monthly"], correct: 1,
+          a: "H4 or H1/H2. Lower timeframes than that get noisy, with too many false zones from minor, low-conviction moves." },
+        { type: "mc", q: "True or False: The more times a supply or demand zone gets touched, the stronger it becomes.",
+          options: ["True", "False"], correct: 1,
+          a: "False — the opposite. Every touch absorbs some of the original imbalance, and the zone gets weaker and more likely to eventually break." }
+      ]
+    },
+    {
+      title: "Section 6: Market Structure &amp; Liquidity (Day 21)",
+      questions: [
+        { type: "text", q: "What does \"HH\" stand for, and what does it mean?",
+          a: "Higher High — a swing high that prints above the previous swing high. Along with HL, LH, and LL, it's one of the four building blocks of market structure." },
+        { type: "mc", q: "What is a \"liquidity grab\"?",
+          options: [
+            "A gap in the market with no trading activity",
+            "Price wicking through a cluster of stop losses beyond an obvious high or low, then reversing hard",
+            "A broker execution error",
+            "A specific candlestick pattern"
+          ], correct: 1,
+          a: "Price wicks through a cluster of stop losses sitting beyond an obvious swing high or low, triggers them, then reverses hard in the opposite direction." }
+      ]
+    },
+    {
+      title: "Section 7: Break and Retest (Day 22)",
+      questions: [
+        { type: "text", q: "What are the two parts required for a valid break and retest?",
+          a: "The break (a real, decisive move through the level) and the retest (price returns to that same area and fails to reclaim it). Both parts are required, not one." },
+        { type: "mc", q: "True or False: A break and retest should be judged by the candle body, not the wick.",
+          options: ["True", "False"], correct: 1,
+          a: "False — exactly like every other tool this week, it's judged by the wick, not the body. A break is confirmed by how far the wick traveled, a retest by where the wick stopped." }
+      ]
+    },
+    {
+      title: "Section 8: Timeframe Correlation (Day 23)",
+      questions: [
+        { type: "mc", q: "The H4 chart is bullish, but the 15-minute chart just printed a bearish dip. What's your actual bias?",
+          options: [
+            "Bullish, the higher timeframe wins",
+            "Bearish, the lower timeframe wins",
+            "No bias, wait until they agree",
+            "Average the two into a neutral bias"
+          ], correct: 0,
+          a: "The higher timeframe bias always wins. The 15-minute dip is noise inside the bigger H4 picture, not a reason to abandon the bias." },
+        { type: "mc", q: "True or False: If you only focus on the 5, 15, and 30-minute charts, you will be a profitable trader long term.",
+          options: ["True", "False"], correct: 1,
+          a: "False — you will not be a profitable trader long term on lower timeframes alone. They're for precision entries, not for the context only a higher timeframe provides." }
+      ]
+    }
+  ];
+
+  var root = document.getElementById("quiz-root");
+  var qCounter = 0;
+  var letters = ["A", "B", "C", "D"];
+
+  sections.forEach(function (section) {
+    var sec = document.createElement("div");
+    sec.className = "section";
+    var h = document.createElement("div");
+    h.className = "section-title";
+    h.innerHTML = section.title;
+    sec.appendChild(h);
+
+    section.questions.forEach(function (item) {
+      qCounter++;
+      var card = document.createElement("div");
+      card.className = "question";
+
+      var qp = document.createElement("p");
+      qp.className = "qtext";
+      qp.innerHTML = '<span class="qnum">' + qCounter + ".</span>" + item.q;
+      card.appendChild(qp);
+
+      var answerDiv = document.createElement("div");
+      answerDiv.className = "inline-answer";
+      answerDiv.innerHTML = "<b>Answer:</b> " + item.a;
+
+      if (item.type === "mc") {
+        var optWrap = document.createElement("div");
+        optWrap.className = "options";
+        item.options.forEach(function (optText, i) {
+          var opt = document.createElement("div");
+          opt.className = "opt";
+          opt.innerHTML = "<b>" + letters[i] + ")</b> <span>" + optText + "</span>";
+          optWrap.appendChild(opt);
+        });
+        var optEls = optWrap.querySelectorAll(".opt");
+        optEls.forEach(function (opt, i) {
+          opt.onclick = function () {
+            if (opt.classList.contains("disabled")) return;
+            optEls.forEach(function (o) { o.classList.add("disabled"); });
+            optEls[item.correct].classList.add("correct");
+            if (i !== item.correct) opt.classList.add("incorrect");
+            answerDiv.classList.add("visible");
+          };
+        });
+        card.appendChild(optWrap);
+      } else {
+        var chip = document.createElement("div");
+        chip.className = "reveal-chip";
+        chip.textContent = "Show Answer";
+        chip.onclick = function () {
+          answerDiv.classList.add("visible");
+          chip.classList.add("hidden");
+        };
+        card.appendChild(chip);
+      }
+
+      card.appendChild(answerDiv);
+      sec.appendChild(card);
+    });
+
+    root.appendChild(sec);
+  });
+
+  function revealAll() {
+    document.querySelectorAll(".inline-answer").forEach(function (el) { el.classList.add("visible"); });
+    document.querySelectorAll(".reveal-chip").forEach(function (el) { el.classList.add("hidden"); });
+    document.querySelectorAll(".opt").forEach(function (el) { el.classList.add("disabled"); });
+
+    var flatQuestions = [];
+    sections.forEach(function (s) { s.questions.forEach(function (q) { flatQuestions.push(q); }); });
+    var cards = document.querySelectorAll(".question");
+    cards.forEach(function (card, idx) {
+      var item = flatQuestions[idx];
+      if (item.type === "mc") {
+        var opts = card.querySelectorAll(".opt");
+        opts[item.correct].classList.add("correct");
+      }
+    });
+    document.getElementById("reveal-all-btn").textContent = "All Answers Revealed ✓";
+  }
+</script>
+
+</body>
+</html>
