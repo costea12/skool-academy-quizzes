@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quiz 4: Week 4 Recap — Skool Trading Academy</title>
+<style>
+  :root {
+    --baby-pink: #FCE9E6;
+    --deep-berry: #6B2545;
+    --berry-panel: #8C3A5C;
+    --rose-gold: #D9847E;
+    --rose-gold-light: #E8AFA2;
+    --text-dark: #4A2530;
+    --text-muted: #7A4A56;
+    --light-text-on-dark: #F7DCE4;
+    --white: #FFFFFF;
+    --correct: #2E9E6B;
+    --incorrect: #D6484F;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--baby-pink);
+    font-family: "Trebuchet MS", Verdana, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.5;
+  }
+
+  .header {
+    background: var(--deep-berry);
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    color: var(--rose-gold-light);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    color: var(--white);
+    font-size: clamp(28px, 5vw, 42px);
+    margin: 14px 0 10px;
+  }
+
+  .header p {
+    color: var(--light-text-on-dark);
+    font-style: italic;
+    font-size: clamp(14px, 2vw, 18px);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .intro {
+    background: var(--white);
+    border: 1px solid var(--rose-gold);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+    font-size: 15.5px;
+    color: var(--text-dark);
+  }
+
+  .intro p { margin: 0 0 12px; }
+  .intro p:last-child { margin-bottom: 0; }
+
+  .section { margin-bottom: 34px; }
+
+  .section-title {
+    color: var(--deep-berry);
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid var(--rose-gold);
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+  }
+
+  .question {
+    background: var(--white);
+    border: 1px solid var(--rose-gold-light);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+
+  .question > p.qtext {
+    margin: 0 0 6px;
+    font-size: 15.5px;
+  }
+
+  .qnum { color: var(--rose-gold); font-weight: bold; margin-right: 6px; }
+
+  /* Multiple choice options */
+  .options { margin: 12px 0 0; display: flex; flex-direction: column; gap: 8px; }
+
+  .opt {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--rose-gold-light);
+    border-radius: 8px;
+    background: var(--baby-pink);
+    cursor: pointer;
+    font-size: 14.5px;
+    color: var(--text-dark);
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .opt:hover { border-color: var(--rose-gold); transform: translateX(2px); }
+
+  .opt b { color: var(--deep-berry); }
+
+  .opt.correct { background: #E3F3EC; border-color: var(--correct); }
+  .opt.correct b, .opt.correct span { color: var(--correct); font-weight: bold; }
+
+  .opt.incorrect { background: #FBE7E6; border-color: var(--incorrect); opacity: 0.75; }
+
+  .opt.disabled { pointer-events: none; }
+
+  /* Tap-to-reveal for text/short-answer questions */
+  .reveal-chip {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 16px;
+    background: var(--rose-gold-light);
+    color: var(--deep-berry);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+  }
+
+  .reveal-chip:hover { background: var(--rose-gold); color: var(--white); }
+  .reveal-chip.hidden { display: none; }
+
+  .inline-answer {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #F3D9D4;
+    border-left: 4px solid var(--rose-gold);
+    border-radius: 0 8px 8px 0;
+    font-size: 14.5px;
+    color: var(--text-dark);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .inline-answer.visible { display: block; }
+  .inline-answer b { color: var(--deep-berry); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal-row { text-align: center; margin: 44px 0; }
+
+  #reveal-all-btn {
+    background: var(--deep-berry);
+    color: var(--white);
+    border: none;
+    border-radius: 30px;
+    padding: 16px 38px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  #reveal-all-btn:hover { background: var(--berry-panel); transform: translateY(-2px); }
+  #reveal-all-btn:active { transform: translateY(0); }
+
+  .recap {
+    background: var(--deep-berry);
+    border-radius: 16px;
+    padding: 30px 32px;
+    margin-top: 48px;
+    color: var(--white);
+  }
+
+  .recap h2 { color: var(--rose-gold-light); font-size: 22px; margin-top: 0; }
+  .recap p { font-size: 15px; color: var(--light-text-on-dark); line-height: 1.6; }
+
+  .recap .homework {
+    background: var(--berry-panel);
+    border: 1px solid var(--rose-gold);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 16px;
+    font-size: 15px;
+    color: var(--white);
+  }
+
+  .recap .homework b { color: var(--rose-gold-light); }
+
+  .closing {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--berry-panel);
+    font-style: italic;
+    font-weight: bold;
+    font-size: 17px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="eyebrow">SKOOL TRADING ACADEMY &nbsp;❤&nbsp; 32-DAY BOOTCAMP</div>
+    <h1>Quiz 4: Week 4 Recap</h1>
+    <p>Day 30 · The full checklist, the psychology, and the habits that make it stick.</p>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <p>You've just finished Week 4, the week that turned six separate tools into one process, and one process into a professional mindset. The full checklist, the psychology behind running it under pressure, reading someone else's signal instead of just your own, closing the loop on your very first trade, and building the habits that make all of it compound instead of fade.</p>
+      <p>Take your time. Reference your notes from Days 24-29 if you need to. <b>Tap any answer option to check yourself as you go</b> — or use the button at the very end to reveal everything at once.</p>
+    </div>
+
+    <div id="quiz-root"></div>
+
+    <div class="reveal-row">
+      <button id="reveal-all-btn" onclick="revealAll()">Reveal All Answers</button>
+    </div>
+
+    <div class="recap">
+      <h2>Week 4 Recap &amp; The Road Ahead</h2>
+      <p>Week 4 took everything from Weeks 2 and 3 and made it usable under real conditions: one ordered checklist instead of six separate ideas, the psychology to actually run that checklist when money is on the line, the skill to evaluate someone else's signal instead of blindly trusting it, and the journaling habit that turns every single trade, win or lose, into something you actually learn from. The Day 2 trade you copied blind in Week 1 is now something you could defend line by line.</p>
+      <div class="homework">
+        <b>Your homework:</b> before the capstone, pull up your trade journal (or start one now if you haven't) and review your last week of decisions the way Day 28 taught you to, looking specifically for any of Day 29's five mistakes hiding in there.
+      </div>
+    </div>
+
+    <div class="closing">Twenty-nine lessons down. Three days to go. ❤</div>
+
+  </div>
+
+<script>
+  // Each question: type "mc" (multiple choice, clickable options) or "text" (short answer / true-false, tap-to-reveal).
+  var sections = [
+    {
+      title: "Section 1: The Full Confluence Checklist (Day 24)",
+      questions: [
+        { type: "mc", q: "What's the correct order of the six-step checklist?",
+          options: [
+            "Wicks, Fibonacci, S/R and S/D, Break and Retest, Market Structure, Timeframe Correlation",
+            "Timeframe Correlation, Market Structure, S/R and S/D, Fibonacci/PRZ, Wicks, Break and Retest",
+            "Market Structure, Timeframe Correlation, Wicks, S/R and S/D, Break and Retest, Fibonacci/PRZ",
+            "It doesn't matter, run all six in any order"
+          ], correct: 1,
+          a: "Timeframe Correlation first (sets the bias), then Market Structure (confirms it), then S/R and S/D (finds the zone), then Fibonacci/PRZ (narrows it), then Wicks (the trigger), then Break and Retest (the final filter)." },
+        { type: "mc", q: "True or False: Even inside a fully confluent setup, if price breaks a zone instead of holding it, you should still wait for the retest before entering.",
+          options: ["True", "False"], correct: 0,
+          a: "True — no break, no trade still applies even inside an otherwise perfect setup. Wait for the retest." }
+      ]
+    },
+    {
+      title: "Section 2: Trading Psychology + the 10 Rules (Day 25)",
+      questions: [
+        { type: "mc", q: "What's the difference between the 5% figure and the 1-2% figure for risk per trade?",
+          options: [
+            "5% is the target, 1-2% is the hard ceiling",
+            "5% is the hard ceiling you never cross, 1-2% is the actual target you trade with",
+            "They're the same number expressed two ways",
+            "5% applies to forex, 1-2% applies to gold"
+          ], correct: 1,
+          a: "5% is the hard ceiling you never cross under any circumstance, 1-2% (tighter at 0.5-1% for more room for error) is what you actually trade with day to day." },
+        { type: "text", q: "What is loss aversion, and why does it make traders hold losers too long and cut winners too early?",
+          a: "Loss aversion is feeling the pain of a loss roughly twice as intensely as the pleasure of an equivalent gain. It's why traders hold losing trades too long hoping to avoid \"making it real,\" and cut winning trades too early just to lock in a smaller, safer gain." }
+      ]
+    },
+    {
+      title: "Section 3: Advanced Signal Reading, Part 1 (Day 26)",
+      questions: [
+        { type: "text", q: "What are the four fields every trading signal contains?",
+          a: "Pair and direction, entry, stop loss, and take profit. That's all a signal-caller is actually handing you, everything else is your job to verify." },
+        { type: "mc", q: "True or False: A stop loss placed at a suspiciously round, even distance like exactly 50 pips, with no connection to market structure, is a green flag.",
+          options: ["True", "False"], correct: 1,
+          a: "False — that's a red flag, not a green one. A round, even distance with no tie to structure means nobody actually checked the chart." }
+      ]
+    },
+    {
+      title: "Section 4: Advanced Signal Reading, Part 2 + the Final Audit (Day 27)",
+      questions: [
+        { type: "mc", q: "The Day 2 trade used a lot size of 0.01 against a correct 1%-risk sizing of 0.10. What was the real risk actually taken on that trade?",
+          options: ["1% of the account", "5% of the account", "About 0.1% of the account", "10% of the account"], correct: 2,
+          a: "About 0.1% of the account, ten times smaller than the correct 1% sizing. The training wheels were safe by an order of magnitude on top of an already sound setup." },
+        { type: "text", q: "Why does treating money as a tool, not your identity, make the checklist easier to actually follow under real pressure?",
+          a: "Because when you're attached to the money itself instead of the process, every stop loss feels like a threat to your identity. Detached from the outcome, the checklist becomes something you can actually execute under pressure, not just recite when calm." }
+      ]
+    },
+    {
+      title: "Section 5: Trade Journaling &amp; Self-Review Habits (Day 28)",
+      questions: [
+        { type: "text", q: "Name the five fields every trade journal entry should capture.",
+          a: "The setup, the reasoning, a screenshot, your emotional state, and the outcome plus an honest process verdict. Five fields, two minutes, every trade." },
+        { type: "mc", q: "A trade hits its stop loss, but every step of the checklist was followed correctly beforehand. How should this trade be logged?",
+          options: [
+            "A bad trade, because it lost money",
+            "A good trade with a bad outcome",
+            "Not worth logging since it lost",
+            "A mistake to avoid repeating"
+          ], correct: 1,
+          a: "A good trade with a bad outcome. Grade the trade by whether you followed your own process, not by whether it happened to win." }
+      ]
+    },
+    {
+      title: "Section 6: Common Beginner Mistakes &amp; Psychological Traps (Day 29)",
+      questions: [
+        { type: "mc", q: "Why is overleveraging described as a losing-streak problem rather than a single-trade problem?",
+          options: [
+            "Because leverage is illegal above a certain size",
+            "Because a trader who sizes for one trade instead of a string of losses is one bad week away from disaster",
+            "Because it only matters on Fridays",
+            "Because it only affects forex pairs, not gold"
+          ], correct: 1,
+          a: "A trader who sizes for a single trade instead of for a losing streak is one bad week away from disaster, even if any one trade's risk percentage looks fine on paper." },
+        { type: "mc", q: "True or False: Abandoning a strategy after a few losses in a row usually proves the strategy doesn't work.",
+          options: ["True", "False"], correct: 1,
+          a: "False — usually the opposite. Every strategy has losing streaks, that's variance, not proof it's broken. Abandoning it right before the law of averages works in your favor is one of the biggest reasons beginners never get good at anything." }
+      ]
+    }
+  ];
+
+  var root = document.getElementById("quiz-root");
+  var qCounter = 0;
+  var letters = ["A", "B", "C", "D"];
+
+  sections.forEach(function (section) {
+    var sec = document.createElement("div");
+    sec.className = "section";
+    var h = document.createElement("div");
+    h.className = "section-title";
+    h.innerHTML = section.title;
+    sec.appendChild(h);
+
+    section.questions.forEach(function (item) {
+      qCounter++;
+      var card = document.createElement("div");
+      card.className = "question";
+
+      var qp = document.createElement("p");
+      qp.className = "qtext";
+      qp.innerHTML = '<span class="qnum">' + qCounter + ".</span>" + item.q;
+      card.appendChild(qp);
+
+      var answerDiv = document.createElement("div");
+      answerDiv.className = "inline-answer";
+      answerDiv.innerHTML = "<b>Answer:</b> " + item.a;
+
+      if (item.type === "mc") {
+        var optWrap = document.createElement("div");
+        optWrap.className = "options";
+        item.options.forEach(function (optText, i) {
+          var opt = document.createElement("div");
+          opt.className = "opt";
+          opt.innerHTML = "<b>" + letters[i] + ")</b> <span>" + optText + "</span>";
+          optWrap.appendChild(opt);
+        });
+        var optEls = optWrap.querySelectorAll(".opt");
+        optEls.forEach(function (opt, i) {
+          opt.onclick = function () {
+            if (opt.classList.contains("disabled")) return;
+            optEls.forEach(function (o) { o.classList.add("disabled"); });
+            optEls[item.correct].classList.add("correct");
+            if (i !== item.correct) opt.classList.add("incorrect");
+            answerDiv.classList.add("visible");
+          };
+        });
+        card.appendChild(optWrap);
+      } else {
+        var chip = document.createElement("div");
+        chip.className = "reveal-chip";
+        chip.textContent = "Show Answer";
+        chip.onclick = function () {
+          answerDiv.classList.add("visible");
+          chip.classList.add("hidden");
+        };
+        card.appendChild(chip);
+      }
+
+      card.appendChild(answerDiv);
+      sec.appendChild(card);
+    });
+
+    root.appendChild(sec);
+  });
+
+  function revealAll() {
+    document.querySelectorAll(".inline-answer").forEach(function (el) { el.classList.add("visible"); });
+    document.querySelectorAll(".reveal-chip").forEach(function (el) { el.classList.add("hidden"); });
+    document.querySelectorAll(".opt").forEach(function (el) { el.classList.add("disabled"); });
+
+    var flatQuestions = [];
+    sections.forEach(function (s) { s.questions.forEach(function (q) { flatQuestions.push(q); }); });
+    var cards = document.querySelectorAll(".question");
+    cards.forEach(function (card, idx) {
+      var item = flatQuestions[idx];
+      if (item.type === "mc") {
+        var opts = card.querySelectorAll(".opt");
+        opts[item.correct].classList.add("correct");
+      }
+    });
+    document.getElementById("reveal-all-btn").textContent = "All Answers Revealed ✓";
+  }
+</script>
+
+</body>
+</html>
